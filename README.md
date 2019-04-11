@@ -185,8 +185,14 @@ C_DEFS = \
 一开始希望使用openocd作为gdb服务器进行在线硬件调试。但是无论怎样都不能连接板卡。之前使用Truestudio时发现在其根目录下有一个Services文件夹，里面有J-Link_gdbserver、ST-LINK_gdbserver、STM32CubeProgrammer三个文件夹。我的官方demo板自带stlink，所以选择这里的ST-LINK_gdbserver作为调试服务器。在使用ST-LINK_gdbserver时会调用STM32CubeProgrammer内的文件，所以不要修改任何文件，包括目录结构。
 我选择将Services文件夹放在msys2的~目录下，并重命名为STM32_Servers文件夹。
 打开msys2的中端，在/bin目录下新建st-link-gdb-server.sh文件，添加内容：
-> cd /c/msys64/home/63143/STM32_Servers/ST-LINK_gdbserver/
-> ./ST-LINK_gdbserver.exe -c config.txt
+
+
+```
+
+cd /c/msys64/home/63143/STM32_Servers/ST-LINK_gdbserver/
+./ST-LINK_gdbserver.exe -c config.txt
+```
+
 
 这样就可以直接运行st-link-gdb-server.sh来启动gdb server。默认gdb调试端口为localhost:6123。
 
