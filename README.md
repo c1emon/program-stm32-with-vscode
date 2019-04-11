@@ -18,10 +18,9 @@ gcc+gdb+st-link+hal+vs-code
 
 1. 安装MSYS2。
 因为需要使用make、rm等命令，所以安装msys2。我安装在C:\msys64目录下。更新msys2的源为国内源。打开msys的命令行运行pacman -Sy刷新源缓存。运行pacman -S make安装make工具(该处命令都属于Arch Linux系，自行查阅)。安装完毕后执行make -v应该可以输出make的版本信息。例如：
-
-![9c261b2b38d1e80f28206c3ecaab84f0.png](en-resource://database/407:1)
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/2.png)
 &emsp;&emsp;进入win10系统环境变量设置。在path中添加msys2可执行文件的路径。
-![c9da9973bccd9effb0d12e3a2ce6df34.png](en-resource://database/405:1)
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/1.png)
 
 至此，msys2环境安装完毕。
 
@@ -29,8 +28,8 @@ gcc+gdb+st-link+hal+vs-code
 
 2. arm-none-eabi-gcc安装
 该编译器无需exe文件进行安装，去官网下载解压到合适路径即可。
-推荐安装gcc-arm-none-eabi-7-2018-q2-update-win32，最新本gcc由于bug原因生成.hex文件时会报错。安装完成后将编译器路径(例如：C:\msys64\home\63143\gcc-arm-none-eabi-7-2018-q2-update-win32\bin)添加至系统path。
-![4927137c50b05b30f02a91565416417b.png](en-resource://database/409:1)
+推荐安装gcc-arm-none-eabi-7-2018-q2-update-win32，最新本gcc由于bug原因生成.hex文件时会报错。安装完成后将编译器路径(例如：C:\msys64\home\63143\gcc-arm-none-eabi-7-2018-q2-update-win32\bin)添加至系统path
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/3.png)
 
 ---
 
@@ -40,8 +39,8 @@ gcc+gdb+st-link+hal+vs-code
 ---
 
 4. 测试环境
-重启后打开powershell。执行arm-none-eabi-gcc -v和make -v应有以下输出。
-![d3ff201e2b214666da11b1dc5c0e9e9b.png](en-resource://database/413:1)
+重启后打开powershell。执行arm-none-eabi-gcc -v和make -v应有以下输出
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/4.png)
 至此基础开发环境搭建完成。
 
 ---
@@ -54,19 +53,21 @@ gcc+gdb+st-link+hal+vs-code
 
 * 新建工程
 在system core设置下选择使用外部晶振(HSE)
-![0f2ac98ffa8e376b0e8b77059f5d3673.png](en-resource://database/415:1)
+
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/5.png)
 其他外设自行选择。此处我选择初始化GPIO、TIM2和USART1。
 
 * 配置系统时钟树
 我的板子外置时钟为8Mhz，所以Input frequency配置为8Mhz。
 其他可由Resolve Clock Issues自动配置。
-![454be7452c74918fb36c6665ff1f0690.png](en-resource://database/417:1)
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/6.png)
 
 * 配置生成选项
 此处Toolchain选择Makefile，其他名称路径可自定义，路径中不要包含中文。
-![982dd821cdf0b5d714b33bb7202b715e.png](en-resource://database/419:1)
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/7.png)
 左侧Code Generator中选择Copy all used libraries into the project fioder，勾选Generate peripheral initiailzation as a pair of '.c/.h' files per peripheral。
-![8f3b4628f5067b363526ada1f98b9cb1.png](en-resource://database/421:1)
+
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/8.png)
 
 * 生成工程文件
 点击GENERATE CODE生成。
@@ -89,9 +90,10 @@ int __io_putchar(int ch)
 ```
 该函数是syscalls.c中定义的一个weak类型的函数，可以被重载。且会被该源文件内_write函数调用。生成的makefile工程不带有syscalls.c文件，可以使用cubemx生成Truestudio工程，从其中提取该文件，已经提取该文件。将该文件放入Core/Src目录下。因为使用makefile编译，所以还要将新增源文件添加至makefile源文件编译列表。
 打开makefile文件，建议不要使用windows记事本打开，可以使用vscode或者notepad++。在大约38行处C_SOURCES处添加一行Core/Src/syscalls.c \。如图：
-![7d18500df525f860e20ba57ed7967f20.png](en-resource://database/423:1)
+
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/9.png)
 为了让printf函数可以进行浮点输出，还需要在链接器中添加-u_printf_float选项。
-![f5f4b1f454f214cb3ee2053f801a946a.png](en-resource://database/425:1)
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/10.png)
 
 测试：
 main函数片段：
@@ -107,7 +109,7 @@ main函数片段：
 /* USER CODE END 2 */
 ```
 执行结果：
-![25aa838f5869a7f2d21647479f4cffcd.png](en-resource://database/427:1)
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/11.png)
 
 ---
 
@@ -118,7 +120,8 @@ main函数片段：
 
 * 启用DSP Lib
 stm32f4系列有浮点处理单元，并且官方提供了dsp库。经测试直接包含math.h库来调用函数无法使用，需要使用arm_math.h库。对于有硬件浮点的cpu，对应头文件stm32f4xxxx.h中宏定义__FPU_PRESENT应为1U，表示具有硬件浮点。例如stm32f429中，在stm32f429xx.h中可找到如下字段：
-![846dcfa000b59d4c1afbccb20830ceb9.png](en-resource://database/429:1)
+
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/12.png)
 确认此处设置无误后，打开core_cm4.h文件(其他芯片自行选择对应核心文件)。我们使用gcc编译器，所以默认编译器标志宏定义为__GUNC__，约在151行处有判断是否启用硬件浮点的条件编译
 ```
 #elif defined ( __GNUC__ )
@@ -135,7 +138,8 @@ stm32f4系列有浮点处理单元，并且官方提供了dsp库。经测试直�
 #endif
 ```
 因为__FPU_PRESENT标志定义在stm32f429xx.h中，但是core_cm4.h没有包含该文件，所以默认硬件浮点是关闭的。所以在文件头部包含stm32f429xx.h。
-![6f89f2e38efb1123cd70146a4ec70b44.png](en-resource://database/431:1)
+
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/13.png)
 个人认为这里应该由条件编译自动包含对应头文件，不知道为什么st官方没有处理好。
 库文件修改完毕，接下来修改makefile文件。
 在makefile文件约109行处可以找到C_DEFS条目。原始条目应该是:
@@ -168,7 +172,8 @@ C_DEFS = \
 > -L ./ Drivers/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
 
 如图：
-![4d5c678ee5c33a746e0c26f510eea17f.png](en-resource://database/433:1)
+
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/14.png)
 至此dsp lib设置完成，在需要的地方包含arm_math.h即可使用dsp库。
 
 ---
@@ -180,14 +185,21 @@ C_DEFS = \
 一开始希望使用openocd作为gdb服务器进行在线硬件调试。但是无论怎样都不能连接板卡。之前使用Truestudio时发现在其根目录下有一个Services文件夹，里面有J-Link_gdbserver、ST-LINK_gdbserver、STM32CubeProgrammer三个文件夹。我的官方demo板自带stlink，所以选择这里的ST-LINK_gdbserver作为调试服务器。在使用ST-LINK_gdbserver时会调用STM32CubeProgrammer内的文件，所以不要修改任何文件，包括目录结构。
 我选择将Services文件夹放在msys2的~目录下，并重命名为STM32_Servers文件夹。
 打开msys2的中端，在/bin目录下新建st-link-gdb-server.sh文件，添加内容：
-> cd /c/msys64/home/63143/STM32_Servers/ST-LINK_gdbserver/
-> ./ST-LINK_gdbserver.exe -c config.txt
+
+
+```
+
+cd /c/msys64/home/63143/STM32_Servers/ST-LINK_gdbserver/
+./ST-LINK_gdbserver.exe -c config.txt
+```
+
 
 这样就可以直接运行st-link-gdb-server.sh来启动gdb server。默认gdb调试端口为localhost:6123。
 
 ---
 使用vs code打开上一步新建工程文件夹。
-![2a27ff1605805c7a01c28742ec7ecb4a.png](en-resource://database/435:1)
+
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/15.png)
  
 * c_cpp_properties.json文件
 该文件关系到自动补全等，设置错误会引起错误的提示。最重要的是这里的是全局宏定义defines的设置，应与makefile中C_DEFS的内容相同。
