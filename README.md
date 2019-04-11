@@ -18,8 +18,7 @@ gcc+gdb+st-link+hal+vs-code
 
 1. 安装MSYS2。
 因为需要使用make、rm等命令，所以安装msys2。我安装在C:\msys64目录下。更新msys2的源为国内源。打开msys的命令行运行pacman -Sy刷新源缓存。运行pacman -S make安装make工具(该处命令都属于Arch Linux系，自行查阅)。安装完毕后执行make -v应该可以输出make的版本信息。例如：
-
-![9c261b2b38d1e80f28206c3ecaab84f0.png](en-resource://database/407:1)
+![image](https://github.com/cjw7360/program-stm32-with-vscode/raw/master/img_src/1.png)
 &emsp;&emsp;进入win10系统环境变量设置。在path中添加msys2可执行文件的路径。
 ![c9da9973bccd9effb0d12e3a2ce6df34.png](en-resource://database/405:1)
 
