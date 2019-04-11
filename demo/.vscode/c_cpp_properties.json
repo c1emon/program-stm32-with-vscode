@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "ARM STM32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "__GNUC__",
+                "STM32F429xx",
+                "USE_HAL_DRIVER",
+                "ARM_MATH_CM4",
+                "__VFP_FP__"
+            ],
+            "compilerPath": "C:/msys64/home/63143/gcc-arm-none-eabi-7-2018-q2-update-win32/bin/arm-none-eabi-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,36 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "arm debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "arm",
+            "program": "${workspaceFolder}/build/${workspaceRootFolderName}.elf",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/home/63143/gcc-arm-none-eabi-7-2018-q2-update-win32/bin/arm-none-eabi-gdb.exe",
+            "setupCommands": [
+                    {
+                        "text": "file C:/Users/63143/Desktop/demo/build/demo.elf'"
+                    },
+                    {
+                        "text": "target remote localhost:61234"
+                    },
+                    {
+                        "text": "monitor reset"
+                    },
+                    {
+                        "text": "load"
+                    }
+            ],
+            "preLaunchTask": "build"
+        }
+    ]
+}

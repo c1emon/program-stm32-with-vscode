@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "arm_math.h": "c",
+        "core_cm4.h": "c",
+        "math.h": "c",
+        "stm32f4xx.h": "c",
+        "stm32f429xx.h": "c"
+    },
+    "C_Cpp.dimInactiveRegions": true
+}
