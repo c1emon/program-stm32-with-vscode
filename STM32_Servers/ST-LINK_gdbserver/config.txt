@@ -1,0 +1,62 @@
+###############################################################
+#### ST-LINK_gdbserver - Sample Configuration File
+#### Each Line Contains one argument
+#### Comment lines begin with #
+####
+#### Use option -c <config-file> to start with config file
+####  ST-LINK_gdbserver -c config.txt
+####
+#### Using STM32F4_Discovery, 168MHz, SWO Clock 1000 MHz.
+####  ST-LINK_gdbserver.exe -e -d -z 61235 -a 168000000 -b 168
+####
+#### Programming elf file
+####  ST-LINK_gdbserver.exe -e -d -j C:\dev\workspace\MyProg\Debug\MyProg.elf
+####
+#### Get option information
+####  ST-LINK_gdbserver.exe -h
+####
+###############################################################
+
+###############################################################
+#  -e                 : Enables persistant mode
+###############################################################
+-e
+
+###############################################################
+#  -f <Log-File>      : Name of log file. Please make sure
+#                       that directory not is write protected.
+#                     : Example
+-f debug.log
+###############################################################
+
+###############################################################
+#  -l <Log-Level>     : Logging level between 0 & 31
+#          0            Disables logging
+#          >=1          Enables logging of error messages
+#          >=2          Adds warning messages
+#          >=4          Adds communication specific messages
+#          >=8          Adds all information messages
+#          >=16         Adds all HW specific messages
+###############################################################
+#-l 31
+
+###############################################################
+#  -p <Port-Number>   : TCP-Listen Port-Number.
+###############################################################
+-p 61234
+
+###############################################################
+#  -v                 : Enables verbose mode
+###############################################################
+#-v
+
+###############################################################
+#  -r <delay-sec>     : Maximum Delay in status refresh
+###############################################################
+-r 15
+
+###############################################################
+# -d                  : Enables SWD mode
+###############################################################
+-d
+

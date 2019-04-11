@@ -1,0 +1,32 @@
+/*********************************************************************
+*            (c) 1995 - 2018 SEGGER Microcontroller GmbH             *
+*                        The Embedded Experts                        *
+*                           www.segger.com                           *
+**********************************************************************
+
+-------------------------- END-OF-HEADER -----------------------------
+
+File    : LPC5411x_M0.JLinkScript
+Purpose : Script file for NXP LPC5411 series that has a Cortex-M4 and Cortex-M0+ in it.
+          This script connects to the M0+
+Literature:
+  [1]  J-Link User Guide
+
+Additional information:
+  For more information about public functions that can be implemented in order to customize J-Link actions, please refer to [1]
+*/
+
+
+/*********************************************************************
+*
+*       InitTarget
+*/
+void InitTarget(void) {
+  //
+  // Set AP register layout
+  // Usually only needed if core is not accessible via the first AHB-AP / APB-AP found
+  //
+  JLINK_CORESIGHT_AddAP(0, CORESIGHT_AHB_AP);              // AHB-AP (Cortex-M4)
+  JLINK_CORESIGHT_AddAP(1, CORESIGHT_AHB_AP);              // AHB-AP (Cortex-M0+)
+  CORESIGHT_IndexAHBAPToUse = 1;
+}

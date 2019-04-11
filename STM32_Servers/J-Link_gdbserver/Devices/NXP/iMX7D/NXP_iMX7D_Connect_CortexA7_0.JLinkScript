@@ -1,0 +1,61 @@
+/*********************************************************************
+*            (c) 1995 - 2018 SEGGER Microcontroller GmbH             *
+*                        The Embedded Experts                        *
+*                           www.segger.com                           *
+**********************************************************************
+
+-------------------------- END-OF-HEADER -----------------------------
+*/
+/*********************************************************************
+*
+*       Constants (similar to defines)
+*
+**********************************************************************
+*/
+__constant U32 _SRC_M4RCR_ADDR              = 0x3039000C;
+
+/*********************************************************************
+*
+*       ResetTarget
+*/
+void ResetTarget(void) {
+  // In case cores 1-3 are reset, we do nothing, 
+  //  as we would lose connection to these cores, when resetting the device
+  //  as a reset disables the clock to them.
+}
+
+/*********************************************************************
+*
+*       SetupTarget
+*/
+void SetupTarget(void) {
+  U32 v;
+  //
+  // Enable Cortex-A7 Core1 by setting the A7_CORE1_ENABLE bit in the SRC_A7RCR1 register
+  //
+  v = JLINK_MEM_ReadU32(0x30390008);   // A7 Reset Control Register 
+  v |= (1 << 1);                       // Set A7_CORE1_ENABLE
+  JLINK_MEM_WriteU32(0x30390008, v);
+}
+
+/*********************************************************************
+*
+*       InitTarget
+*/
+void InitTarget(void) {
+  Report("***************************************************");
+  Report("J-Link script: iMX7D Cortex-A7_0 core J-Link script");
+  Report("***************************************************");
+  CPU = CORTEX_A7;                                                              // Pre-select that we have a Cortex-A7 connected
+  JTAG_AllowTAPReset = 1;                                                       // J-Link is allowed to use a TAP reset for JTAG-chain auto-detection
+  JLINK_CORESIGHT_Configure("IRPre=0;DRPre=0;IRPost=0;DRPost=0;IRLenDevice=4");
+  //
+  // Manually configure which APs are present on the CoreSight device
+  //
+  CORESIGHT_AddAP(0, CORESIGHT_AHB_AP);
+  CORESIGHT_AddAP(1, CORESIGHT_APB_AP);
+  CORESIGHT_AddAP(2, CORESIGHT_CUSTOM_AP);
+  CORESIGHT_AddAP(3, CORESIGHT_CUSTOM_AP);
+  CORESIGHT_AddAP(4, CORESIGHT_AHB_AP);
+  CORESIGHT_IndexAPBAPToUse = 1;  
+}

@@ -1,0 +1,214 @@
+/*********************************************************************
+*            (c) 1995 - 2018 SEGGER Microcontroller GmbH             *
+*                        The Embedded Experts                        *
+*                           www.segger.com                           *
+**********************************************************************
+
+-------------------------- END-OF-HEADER -----------------------------
+
+File    : TI_CC3200.JLinkScript
+Purpose : J-Link script file for TI CC3200 support
+Literature:
+  [1]  J-Link User Guide
+
+Additional information:
+  For more information about public functions that can be implemented in order to customize J-Link actions, please refer to [1]
+*/
+
+/*********************************************************************
+*
+*       ResetTarget
+*
+*  Notes
+*    (1) DLL expects target CPU to be halted / in debug mode, when leaving this function
+*    (2) May use MEM_ API functions
+*/
+void ResetTarget(void) {
+  //
+  // Standard Cortex-M reset + vector catch does not work for this device
+  // as ROM BTL needs to run after reset but CPU needs to be halted before it can execute the first instruction of the user application, a custom reset is necessary
+  // As J-Link does not know what is loaded from SPI flash after reset (it may have been reprogrammed in the current session, before reset is issued)
+  // we do not know the application entry point the ROM BTL jumps to
+  // Therefore the reset needs to be customized and adapted to the appropriate target application
+  //
+  // As default reset does not work for this device, we do not perform any reset for know
+  //
+  JLINK_TARGET_Halt();
+}
+
+/*********************************************************************
+*
+*       _ICEPick_AddTAP
+*/
+void _ICEPick_AddTAP(int SDTRReg) {
+  int v;
+  int TAPRegVal;
+  int _ICEPICK_IR_BYPASS;
+  int _ICEPICK_IR_ROUTER;
+  int _ICEPICK_IR_IDCODE;
+  int _ICEPICK_IR_CONNECT;
+  int _ICEPICK_IR_USERCODE;
+  int _ICEPICK_CONNECT_WRITE_KEY;
+  int _ICEPICK_ROUTER_WRITE_REG;
+  int _ICEPICK_BLOCKSEL_SDTR;
+  //
+  // Setup constants
+  //
+  _ICEPICK_IR_BYPASS              = 0x3F;
+  _ICEPICK_IR_ROUTER              = 0x02;
+  _ICEPICK_IR_IDCODE              = 0x04;
+  _ICEPICK_IR_CONNECT             = 0x07;
+  _ICEPICK_CONNECT_WRITE_KEY      = 0x89;
+  _ICEPICK_ROUTER_WRITE_REG       = 1;
+  _ICEPICK_BLOCKSEL_SDTR          = 2;
+  //
+  // Add TAP to ICEPick
+  //
+  JTAG_StoreIR(_ICEPICK_IR_CONNECT);
+  v = _ICEPICK_CONNECT_WRITE_KEY;
+  JTAG_StoreDR(v, 8);                       // Put ICEPick module into connected state
+  JTAG_StoreIR(_ICEPICK_IR_ROUTER);
+  TAPRegVal = 0
+            | (1 <<  3)  // ForceActive: Enable clock to TAP if currently not powered.
+            | (0 <<  8)  // SelectTAP: 1: TAP is added to JTAG chain once Run-Test-Idle is entered
+            | (0 << 14)  // ResetControl: Override the application controls of the functional warm reset to a module (0: Normal operation, 1: Wait in reset)
+            | (1 << 17)  // ReleaseFromWIR: 1: Releases module from reset if currently held in reset
+            | (1 << 20)  // InhibitSleep: 1: Clock and power to TAP is not turned off in case of low power requests
+            ;
+  v = (_ICEPICK_ROUTER_WRITE_REG << 31) | (_ICEPICK_BLOCKSEL_SDTR << 28) | (SDTRReg << 24) | (TAPRegVal << 0);
+  JTAG_StoreDR(v, 32);
+  TAPRegVal = 0
+            | (1 <<  3)  // ForceActive: Enable clock to TAP if currently not powered.
+            | (1 <<  8)  // SelectTAP: 1: TAP is added to JTAG chain once Run-Test-Idle is entered
+            | (1 << 13)  // Enable debug logic
+            | (0 << 14)  // ResetControl: Override the application controls of the functional warm reset to a module (0: Normal operation, 1: Wait in reset)
+            | (1 << 17)  // ReleaseFromWIR: 1: Releases module from reset if currently held in reset
+            | (1 << 20)  // InhibitSleep: 1: Clock and power to TAP is not turned off in case of low power requests
+            ;
+  v = (_ICEPICK_ROUTER_WRITE_REG << 31) | (_ICEPICK_BLOCKSEL_SDTR << 28) | (SDTRReg << 24) | (TAPRegVal << 0);
+  JTAG_StoreDR(v, 32);
+  JTAG_StoreIR(_ICEPICK_IR_BYPASS);
+  JTAG_WriteClocks(10);          // Necessary according to ICEPick documentation to give the target some time to reconfigure the JTAG chain
+}
+
+/*********************************************************************
+*
+*       _InitICEPick
+*/
+int _InitICEPick(void) {
+  int ICEPickId;
+  int DAPId;
+  int Speed;
+  int Result;
+  int BitPos;
+  int _ICEPICK_IR_BYPASS;
+  int _ICEPICK_IR_ROUTER;
+  int _ICEPICK_IR_IDCODE;
+  int _ICEPICK_IR_CONNECT;
+  int _ICEPICK_CONNECT_WRITE_KEY;
+  int _ICEPICK_ROUTER_WRITE_REG;
+  int _ICEPICK_BLOCKSEL_SDTR;
+  int _ICEPICK_SDTR0;
+  int _DAP_IR_IDCODE;
+  _ICEPICK_SDTR0                  =  0;
+  _DAP_IR_IDCODE                  = 0xE;
+  //
+  // ICEPick does not seem to like high JTAG speeds during the init...
+  // so reduce the JTAG speed
+  //
+  Result = 0;
+  Speed       = JTAG_Speed;
+  JTAG_Speed  = 100;
+  //
+  // Perform a TAP reset to make sure that only the ICEPick is in the JTAG chain
+  //
+  JTAG_Write(0x1F, 0, 6);
+  //
+  // Basic configuration of the JTAG chain to enable use of high-level JTAG API
+  // JTAG Device #0 is the TAP closest to TDO
+  // JTAG chain: TDI -> ICEPick (IR6) -> -> TDO
+  //
+  JTAG_DRPre  = 0;
+  JTAG_DRPost = 0;
+  JTAG_IRPre  = 0;
+  JTAG_IRPost = 0;
+  JTAG_IRLen  = 6;
+  JTAG_StoreIR(_ICEPICK_IR_IDCODE);
+  BitPos = JTAG_StoreDR(0x00000000, 32);
+  ICEPickId = JTAG_GetU32(BitPos);
+  Report1("ICEPick IDCODE: ", ICEPickId);
+  //
+  // Put the CPU core TAP (SDTR0) in the JTAG chain
+  //
+  _ICEPick_AddTAP(_ICEPICK_SDTR0);
+  //
+  // Re-configure JTAG chain as DAP is now in the chain, too
+  // JTAG Device #0 is the TAP closest to TDO
+  // JTAG chain: TDI -> ICEPick (IR6) -> CoreSight-DAP (IR4) -> TDO
+  //
+  JTAG_DRPre  = 0;
+  JTAG_DRPost = 1;
+  JTAG_IRPre  = 0;
+  JTAG_IRPost = 6;
+  JTAG_IRLen  = 4;
+  //
+  // Get Id of DAP
+  //
+  JTAG_StoreIR(_DAP_IR_IDCODE);
+  BitPos = JTAG_StoreDR(0x00000000, 32);
+  DAPId = JTAG_GetU32(BitPos);
+  if ((DAPId & 0x00000FFF) != 0x00000477) {
+    Report1("Cannot read DAP IDCODE. Expected 0xXXXXX477, read: ", DAPId);
+    Result = -1;
+  }
+  //
+  // Set TAP-Ids of devices in the JTAG chain
+  //
+  JLINK_JTAG_SetDeviceId(0, DAPId);
+  JLINK_JTAG_SetDeviceId(1, ICEPickId);
+  //
+  // Restore JTAG speed settings
+  //
+  JTAG_Speed = Speed;
+  return Result;
+}
+
+/*********************************************************************
+*
+*       InitTarget()
+*
+*  Function description
+*    If present, called right before performing generic connect sequence.
+*    Usually used for targets which need a special connect sequence.
+*    E.g.: TI devices with ICEPick TAP on them where core TAP needs to be enabled via specific ICEPick sequences first
+*
+*  Return value
+*    >= 0:  O.K.
+*     < 0:  Error
+*
+*  Notes
+*    (1) Must not use high-level API functions like JLINK_MEM_ etc.
+*    (2) For target interface JTAG, this device has to setup the JTAG chain + JTAG TAP Ids.
+*/
+void InitTarget(void) {
+  int r;
+  //
+  // The TI CC3200 supports JTAG only because the ICEPick on it only supports JTAG
+  //
+  r = -1;
+  if (JLINK_ActiveTIF == JLINK_TIF_JTAG) {
+    r = _InitICEPick();
+  } else if (JLINK_ActiveTIF == JLINK_TIF_SWD) {
+    r = 0;
+  }
+  //
+  // Set other global variables needed by the DLL
+  //
+  JLINK_CPU = CORTEX_M4;                                                                   // For a complete list of known CPU constants, please refer to UM08001 (J-Link User Guide)
+  JLINK_CORESIGHT_AddAP(0, CORESIGHT_AHB_AP);                                              // AHB-AP to System Bus
+  JLINK_CORESIGHT_IndexAHBAPToUse = 0;                                                     // Cortex-M: AP-Index of AHB-AP to use for communication with core. Cortex-A/R: AP-Index of AHB-AP that can be used for SEGGER RTT
+  JLINK_JTAG_AllowTAPReset = 0;                                                            // J-Link must not use TAP reset (avoid TAP state machine going reset state) as this would reset the ICEPick and kick the Cortex-M4 core out of the JTAG chain
+  if (r < 0) {
+    Report("ERROR: Cannot connect to target device");
+  }
+}

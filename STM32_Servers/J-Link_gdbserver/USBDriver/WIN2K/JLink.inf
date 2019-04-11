@@ -1,0 +1,83 @@
+;
+; JLink driver setup information file
+; Copyright (c) 2006 by SEGGER Microcontroller Systeme GmbH
+;
+; This file supports:
+;     Windows 2000
+;     Windows XP
+;
+[Version]
+Signature="$Windows NT$"
+Provider=%MfgName%
+DriverVer=01/09/2007,2.6.5.0
+
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+CatalogFile=JLink.cat
+
+
+[Manufacturer]
+%MfgName%=DeviceList
+
+[DeviceList]
+%USB\VID_1366&PID_0101.DeviceDesc%=JLinkInstall, USB\VID_1366&PID_0101
+%USB\VID_1366&PID_0102.DeviceDesc%=JLinkInstall, USB\VID_1366&PID_0102
+%USB\VID_1366&PID_0103.DeviceDesc%=JLinkInstall, USB\VID_1366&PID_0103
+%USB\VID_1366&PID_0104.DeviceDesc%=JLinkInstall, USB\VID_1366&PID_0104
+
+[JLinkInstall.ntx86]
+CopyFiles=JLinkCopyFiles
+
+[JLinkInstall.ntx86.Services]
+Addservice = jlink, 0x00000002, JLinkAddService, JLinkEventLog
+
+[JLinkAddService]
+DisplayName    = %JLink.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\jlink.sys
+
+[JLinkEventLog]
+AddReg=JLinkEventLogAddReg
+
+[JLinkEventLogAddReg]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\jlink.sys"
+HKR,,TypesSupported,  %REG_DWORD%,7
+
+
+[JLinkCopyFiles]
+jlink.sys
+
+[DestinationDirs]
+DefaultDestDir = 10,System32\Drivers
+JLinkCopyFiles = 10,System32\Drivers
+
+
+[SourceDisksNames.x86]
+1=%JLink.DiskName%,,
+
+[SourceDisksFiles.x86]
+jlink.sys = 1
+
+
+;---------------------------------------------------------------;
+
+[Strings]
+MfgName="Segger"
+USB\VID_1366&PID_0101.DeviceDesc="J-Link driver"
+USB\VID_1366&PID_0102.DeviceDesc="J-Link 1 driver"
+USB\VID_1366&PID_0103.DeviceDesc="J-Link 2 driver"
+USB\VID_1366&PID_0104.DeviceDesc="J-Link 3 driver"
+JLink.SvcDesc="J-Link driver"
+JLink.DiskName="J-Link Installation Disk"
+
+; Non-Localizable Strings, DO NOT MODIFY!
+REG_SZ         = 0x00000000
+REG_MULTI_SZ   = 0x00010000
+REG_EXPAND_SZ  = 0x00020000
+REG_BINARY     = 0x00000001
+REG_DWORD      = 0x00010001
+
+
+; *** EOF ***

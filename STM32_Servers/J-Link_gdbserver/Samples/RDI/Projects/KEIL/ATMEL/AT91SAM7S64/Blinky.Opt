@@ -1,0 +1,63 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+ cExt (*.c)
+ aExt (*.s*; *.src; *.a*)
+ oExt (*.obj)
+ lExt (*.lib)
+ tExt (*.txt; *.h; *.inc)
+ pExt (*.plm)
+ CppX (*.cpp)
+ DaveTm { 0,0,0,0,0,0,0,0 }
+
+Target (AT91SAM7S Flash), 0x0005 // Tools: ''
+Target (AT91SAM7S RAM), 0x0005 // Tools: ''
+GRPOPT 1,(Startup Code),1,0,0
+GRPOPT 2,(Source Code),1,0,0
+
+OPTFFF 1,1,2,0,0,0,0,0,<.\SAM7S.s><SAM7S.s> 
+OPTFFF 2,2,1,0,0,0,0,0,<.\Blinky.c><Blinky.c> 
+
+
+TARGOPT 1, (AT91SAM7S Flash)
+ KACLK=18432000
+  OPTTT 1,1,1,0
+  OPTHX 0,65535,0,0,0
+  OPTLX 120,65,8,<.\Flash\>
+  OPTOX 16
+  OPTLT 1,1,1,0,1,1,0,1,0,0,0,0
+  OPTXL 1,1,1,1,1,1,1,0,0
+  OPTFL 1,0,1
+  OPTBL 0,(Datasheet)<DATASHTS\ATMEL\AT91SAMS64.PDF>
+  OPTDL (SARM.DLL)(-cAT91SAM7S)(DARMATS.DLL)(-p91SAM7S64)(SARM.DLL)()(TARMATS.DLL)(-p91SAM7S64)
+  OPTDBG 49150,1,()()()()()()()()()(.\Flash.ini) (BIN\AGDIRDI.DLL)()()()
+  OPTKEY 0,(AGDIRDI)(-O0 -P(C:\JLinkRDI_V274d\JLinkRDI.dll) -T() -J1 -FO7 -FD200000 -FC2000 -FN1 -FF0AT91SAM7S64 -FS0100000 -FL010000)
+  OPTKEY 0,(DLGTARM)((117=-1,-1,-1,-1,0)(116=-1,-1,-1,-1,0)(119=-1,-1,-1,-1,0)(112=-1,-1,-1,-1,0)(110=-1,-1,-1,-1,0)(111=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(118=-1,-1,-1,-1,0)(130=-1,-1,-1,-1,0)(131=-1,-1,-1,-1,0)(114=-1,-1,-1,-1,0)(113=-1,-1,-1,-1,0)(115=-1,-1,-1,-1,0)(125=-1,-1,-1,-1,0)(135=-1,-1,-1,-1,0))
+  OPTKEY 0,(ARMDBGFLAGS)()
+  OPTKEY 0,(UL2ARM)(-U268774108 -O15 -S0 -C0 -N00("ARM7TDMI Core") -D00(3F0F0F0F) -L00(4) -FO6 -FD200000 -FC800 -FN1 -FF0AT91SAM7S64 -FS0100000 -FL010000)
+  OPTDF 0x40000086
+  OPTLE <>
+  OPTLC <>
+EndOpt
+
+TARGOPT 2, (AT91SAM7S RAM)
+ KACLK=18432000
+  OPTTT 1,1,1,0
+  OPTHX 0,65535,0,0,0
+  OPTLX 120,65,8,<.\RAM\>
+  OPTOX 16
+  OPTLT 1,1,1,0,1,1,0,1,0,0,0,0
+  OPTXL 1,1,1,1,1,1,1,0,0
+  OPTFL 1,0,0
+  OPTBL 0,(Datasheet)<DATASHTS\ATMEL\AT91SAMS64.PDF>
+  OPTDL (SARM.DLL)(-cAT91SAM7S)(DARMATS.DLL)(-p91SAM7S64)(SARM.DLL)()(TARMATS.DLL)(-p91SAM7S64)
+  OPTDBG 49150,1,()()()()()()()()()(.\RAM.ini) (BIN\AGDIRDI.DLL)()()()
+  OPTKEY 0,(AGDIRDI)(-O0 -P(C:\JLinkRDI_V274d\JLinkRDI.dll) -T() -J1 -FO7 -FD200000 -FC2000 -FN1 -FF0AT91SAM7S64 -FS0100000 -FL010000)
+  OPTKEY 0,(DLGTARM)((117=-1,-1,-1,-1,0)(116=-1,-1,-1,-1,0)(119=-1,-1,-1,-1,0)(112=-1,-1,-1,-1,0)(110=-1,-1,-1,-1,0)(111=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(118=-1,-1,-1,-1,0)(130=-1,-1,-1,-1,0)(131=-1,-1,-1,-1,0)(114=-1,-1,-1,-1,0)(113=-1,-1,-1,-1,0)(115=-1,-1,-1,-1,0)(125=-1,-1,-1,-1,0)(135=-1,-1,-1,-1,0))
+  OPTKEY 0,(ARMDBGFLAGS)()
+  OPTKEY 0,(UL2ARM)(-U56240812 -O15 -S0 -C0 -N00("ARM7TDMI Core") -D00(3F0F0F0F) -L00(4) -FO6 -FD200000 -FC800 -FN1 -FF0AT91SAM7S64 -FS0100000 -FL010000)
+  OPTDF 0x40000086
+  OPTLE <>
+  OPTLC <>
+EndOpt
+

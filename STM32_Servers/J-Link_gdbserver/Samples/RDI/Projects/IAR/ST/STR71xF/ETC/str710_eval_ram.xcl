@@ -1,0 +1,225 @@
+//*************************************************************************
+// XLINK command file template for EWARM/ICCARM
+//
+// Usage:  xlink  -f lnkarm  <your_object_file(s)>  <C/EC++ runtime library>
+//
+// $Revision: 1.1 $
+//
+//*************************************************************************
+
+//*************************************************************************
+// In this file it is assumed that the system has the following
+// memory layout:
+//
+//   Exception vectors [0x000000--0x00001F]  RAM or ROM
+//   ROMSTART--ROMEND  [0x008000--0x0FFFFF]  ROM (or other non-volatile memory)
+//   RAMSTART--RAMEND  [0x100000--0x7FFFFF]  RAM (or other read/write memory)
+
+// ram mapped to address 0x0
+-DRAMSTART=0x00000000
+-DRAMEND=0x00003FFF
+
+// code and data in RAM
+-DROMSTART=RAMSTART
+-DROMEND=RAMEND
+
+//
+// -------------
+// Code segments - No code segment may exceed 4/32 Mbytes in size.
+// -------------
+//
+//   INTVEC     -- Exception vector table.
+//   SWITAB     -- Software interrupt vector table.
+//   ICODE      -- Startup (cstartup) and exception code.
+//   DIFUNCT    -- Dynamic initialization vectors used by EC++.
+//   NEARFUNC_x -- Functions with attribute __nearfunc.
+//                 All parts of a Thumb code segment of this type must be
+//                 placed within the same 4 Mbyte area.
+//                 For Arm code, the limit is 32 Mbytes.
+//   FARFUNC_x  -- Functions with attribute __farfunc. These segments may
+//                 be placed anywhere in memory.
+//
+// Where _x can be one of:
+//
+//   _T         -- Thumb code (ROM).
+//   _T_I       -- Thumb code that executes in RAM, initialized by T_ID.
+//   _T_ID      -- Initializer for T_I (ROM).
+//   _A         -- ARM code (ROM).
+//   _A_I       -- ARM code that executes in RAM, initialized by A_ID.
+//   _A_ID      -- Initializer for A_I (ROM).
+//
+// -------------
+// Data segments - may be placed anywhere in memory.
+// -------------
+//
+//   CSTACK     -- The stack used by C/EC++ programs (user mode).
+//   IRQ_STACK  -- The stack used by IRQ service routines.
+//   SVC_STACK  -- The stack used in supervisor mode
+//                 (Define other exception stacks as needed for
+//                 FIQ, ABT, UND, SYS).
+//   HEAP       -- The heap used by malloc and free in C and new and
+//                 delete in EC++.
+//   INITTAB    -- Table containing addresses and sizes of segments that
+//                 need to be initialized at startup (by cstartup).
+//   CHECKSUM   -- The linker places checksum byte(s) in this segment,
+//                 when the -J linker command line option is used.
+//   HUGE_y     -- Objects with the __huge memory attribute (default).
+//
+// Where _y can be one of:
+//
+//   _AN        -- Holds uninitialized located objects, i.e. objects with
+//                 an absolute location given by the @ operator or the
+//                 #pragma location directive. Since these segments
+//                 contain objects which already have a fixed address,
+//                 they should not be mentioned in this linker command
+//                 file.
+//   _C         -- Constants (ROM).
+//   _I         -- Initialized data (RAM).
+//   _ID        -- The original content of _I (copied to _I by cstartup) (ROM).
+//   _N         -- Uninitialized data (RAM).
+//   _Z         -- Zero initialized data (RAM).
+//
+// Note:  Be sure to use end values for the defined address ranges.
+//        Otherwise, the linker may allocate space outside the
+//        intended memory range.
+//*************************************************************************
+
+
+//************************************************
+// Inform the linker about the CPU family used.
+//************************************************
+
+-carm
+
+//*************************************************************************
+// Segment placement - General information
+//
+// All numbers in the segment placement command lines below are interpreted
+// as hexadecimal unless they are immediately preceded by a '.', which
+// denotes decimal notation.
+//
+// When specifying the segment placement using the -P instead of the -Z
+// option, the linker is free to split each segment into its segment parts
+// and randomly place these parts within the given ranges in order to
+// achieve a more efficient memory usage. One disadvantage, however, is
+// that it is not possible to find the start or end address (using
+// the assembler operators .sfb./.sfe.) of a segment which has been split
+// and reformed.
+//
+// When generating an output file which is to be used for programming
+// external ROM/Flash devices, the -M linker option is very useful
+// (see xlink.pdf for details).
+//*************************************************************************
+
+
+//*************************************************************************
+// Read-only segments mapped to ROM.
+//*************************************************************************
+
+
+//************************************************
+// Address range for reset and exception
+// vectors (INTVEC).
+// The vector area is 32 bytes,
+// an additional 32 bytes is allocated for the
+// constant table used by ldr PC in cstartup.s79.
+//************************************************
+
+-Z(CODE)INTVEC=ROMSTART:+0x3f
+
+//************************************************
+// Startup code and exception routines (ICODE).
+//************************************************
+
+-Z(CODE)ICODE,DIFUNCT=ROMSTART-ROMEND
+-Z(CODE)SWITAB=ROMSTART-ROMEND
+
+//************************************************
+// Far code segments may be placed anywhere, but
+// all __nearfunc declared Thumb/ARM functions,
+// located in the NEARFUNC_T/NEARFUNC_A segment,
+// must fit in a single 4/32 Mbyte area.
+//************************************************
+
+-Z(CODE)CODE=ROMSTART-ROMEND
+-Z(CODE)NEARFUNC_T,NEARFUNC_A=ROMSTART-ROMEND
+-Z(CODE)FARFUNC_T,FARFUNC_A=ROMSTART-ROMEND
+
+//************************************************
+// Original ROM location for __ramfunc code copied
+// to and executed from RAM.
+//************************************************
+
+-Z(CONST)NEARFUNC_T_ID,NEARFUNC_A_ID=ROMSTART-ROMEND
+-Z(CONST)FARFUNC_T_ID,FARFUNC_A_ID=ROMSTART-ROMEND
+
+//************************************************
+// Various constants and initializers.
+//************************************************
+
+-Z(CONST)DATA_ID,DATA_C=ROMSTART-ROMEND
+-Z(CONST)INITTAB,HUGE_ID,HUGE_C=ROMSTART-ROMEND
+-Z(CONST)CHECKSUM=ROMSTART-ROMEND
+
+//*************************************************************************
+// Read/write segments mapped to RAM.
+//*************************************************************************
+
+
+//************************************************
+// Data segments.
+//************************************************
+
+-Z(DATA)DATA_I,DATA_Z,DATA_N=RAMSTART-RAMEND
+-Z(DATA)HUGE_I,HUGE_Z,HUGE_N=RAMSTART-RAMEND
+
+//************************************************
+// __ramfunc code copied to and executed from RAM.
+//************************************************
+
+-Z(DATA)NEARFUNC_T_I,NEARFUNC_A_I=RAMSTART-RAMEND
+-Z(DATA)FARFUNC_T_I,FARFUNC_A_I=RAMSTART-RAMEND
+
+//************************************************
+// ICCARM produces code for __ramfunc functions in
+// *_I segments. The -Q XLINK command line option
+// redirects XLINK to emit the code in the
+// corresponding *_ID segment instead, but to keep
+// symbol and debug information associated with
+// the *_I segment, where the code will execute.
+//************************************************
+
+-QNEARFUNC_T_I=NEARFUNC_T_ID
+-QNEARFUNC_A_I=NEARFUNC_A_ID
+-QFARFUNC_T_I=FARFUNC_T_ID
+-QFARFUNC_A_I=FARFUNC_A_ID
+
+//*************************************************************************
+// Stack and heap segments.
+//*************************************************************************
+
+-D_CSTACK_SIZE=400
+// -D_SVC_STACK_SIZE=10
+-D_IRQ_STACK_SIZE=500
+-D_HEAP_SIZE=4
+
+-Z(DATA)CSTACK+_CSTACK_SIZE=RAMSTART-RAMEND
+// -Z(DATA)SVC_STACK+_SVC_STACK_SIZE=RAMSTART-RAMEND
+-Z(DATA)IRQ_STACK+_IRQ_STACK_SIZE,HEAP+_HEAP_SIZE=RAMSTART-RAMEND
+
+//*************************************************************************
+// ELF/DWARF support.
+//
+// Uncomment the line "-Felf" below to generate ELF/DWARF output.
+// Available format specifiers are:
+//
+//   "-yn": Suppress DWARF debug output
+//   "-yp": Multiple ELF program sections
+//   "-yas": Format suitable for debuggers from ARM Ltd (also sets -p flag)
+//
+// "-Felf" and the format specifiers can also be supplied directly as
+// command line options, or selected from the Xlink Output tab in the
+// IAR Embedded Workbench.
+//*************************************************************************
+
+// -Felf

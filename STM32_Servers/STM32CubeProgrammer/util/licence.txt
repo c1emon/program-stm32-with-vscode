@@ -1,0 +1,150 @@
+SLA0048 Software license agreement
+==================================
+
+LICENSE AGREEMENT
+=================
+This software delivery contains various software that 
+are subject to different license agreements. The terms 
+and conditions of those license agreements are available
+below, as well as in the header files and documentation 
+file accompanying this delivery.
+
+(i) FOR THE SOFTWARE PROVIDED IN SOURCE AND IN OBJECT
+CODE : THE TERMS OF ST LIBERTY SW LICENSE AGREEMENT V2 
+(REPRODUCED BELOW).
+
+(ii) FOR THE SOFTWARE WHICH CONTAINS OPEN SOURCE 
+SOFTWARE: THE APPLICABLE OPEN SOURCE TERMS. OPEN SOURCE 
+TERMS MEANS ANY OPEN SOURCE LICENSE THAT COMPLIES WITH 
+THE OPEN SOURCE DEFINITION SPECIFIED AT 
+WWW.OPENSOURCE.ORG AND ANY OTHER COMPARABLE OPEN SOURCE 
+LICENSE SUCH AS FOR EXAMPLE GNU GENERAL PUBLIC LICENSE 
+(GPL), ECLIPSE PUBLIC LICENSE (EPL), APACHE SOFTWARE 
+LICENSE, BSD LICENSE AND MIT LICENSE. SUCH OPEN SOURCE 
+SOFTWARE IS NOT SUBJECT TO THE TERMS OF THIS AGREEMENT 
+TO THE EXTENT THE TERMS OF THIS AGREEMENT ARE IN 
+CONFLICT WITH SUCH APPLICABLE OPEN SOURCE TERMS. EXCEPT 
+FOR OPEN SOURCE SOFTWARE, YOU HAVE NO RIGHTS UNDER THIS 
+AGREEMENT TO, AND MAY NOT UNDER ANY CIRCUMSTANCES USE 
+THE SOFTWARE OR ANY PARTS THEREOF TO MAKE THEM SUBJECT 
+TO ANY OPEN SOURCE TERMS. THESE ACTIONS INCLUDE BUT ARE 
+NOT LIMITED TO COMBINING THE SOFTWARE BY MEANS OF 
+INCORPORATION OR LINKING OR OTHERWISE. 
+
+(iii) FOR THE SOFTWARE WHICH CONTAINS THIRD PARTY 
+INTELLECTUAL PROPERTY RIGHTS: THE APPLICABLE LICENSE 
+TERMS FROM SUCH THIRD PARTY. LICENSEE ACKNOWLEDGES AND 
+AGREES THAT THIS AGREEMENT DOES NOT CONVEY A LICENSE TO 
+ANY SUCH THIRD PARTY INTELLECTUAL PROPERTY RIGHTS AND 
+THAT LICENSEE IS RESPONSIBLE FOR ANY FEES OR ROYALTIES 
+PAYABLE TO ANY THIRD PARTY BASED ON SUCH THIRD PARTY'S 
+INTERESTS IN THE SOFTWARE. SUCH THIRD PARTY INTELLECTUAL
+PROPERTY RIGHTS ARE NOT SUBJECT TO THE TERMS OF THIS 
+AGREEMENT TO THE EXTENT THE TERMS OF THIS AGREEMENT ARE 
+IN CONFLICT WITH SUCH APPLICABLE THIRD PARTY 
+INTELLECTUAL PROPERTY RIGHTS. BY CLICKING ON THE 
+“I ACCEPT” BUTTON BELOW OR BY INSTALLING, COPYING, 
+DOWNLOADING OR OTHERWISE USING THE SOFTWARE IN THIS 
+DELIVERY, YOU ACKNOWLEDGE THAT YOU HAVE READ THE VARIOUS
+LICENSE AGREEMENTS APPLICABLE TO EACH SOFTWARE IN THIS 
+DELIVERY AND YOU AGREE TO BE BOUND BY THE TERMS OF THOSE
+LICENSES. IF YOU DO NOT AGREE WITH ANY CONDITION OF 
+THOSE LICENSES, DO NOT INSTALL, DOWNLOAD, ACCESS OR USE 
+THE SOFTWARE IN THIS DELIVERY. 
+
+ST Liberty Software License Agreement V2:
+=========================================
+
+SOFTWARE LICENSE AGREEMENT
+==========================
+
+By using this Licensed Software, You are agreeing to be 
+bound by the terms and conditions of this License 
+Agreement. Do not use the Licensed Software until You 
+have read and agreed to the following terms and 
+conditions. The use of the Licensed Software implies 
+automatically the acceptance of the following terms and 
+conditions.
+
+DEFINITIONS
+===========
+
+Licensed Software: means the enclosed SOFTWARE/FIRMWARE,
+EXAMPLES, PROJECT TEMPLATE and all the related 
+documentation and design tools licensed and delivered in
+the form of object and/or source code as the case maybe.
+Product: means Your and Your’s end-users’ product or 
+system, and all the related documentation, that includes
+or incorporates the Licensed Software and provided 
+further that such Licensed Software or derivative works 
+of the Licensed Software execute solely and exclusively 
+on microcontroller devices manufactured by or for ST.
+
+LICENSE
+=======
+STMicroelectronics (“ST”) grants You a non-exclusive, 
+worldwide, non-transferable (whether by assignment or 
+otherwise unless expressly authorized by ST) non 
+sub-licensable, revocable, royalty-free limited license 
+of the Licensed Software to:
+
+(i) make copies, prepare derivative works of the source 
+code version of the Licensed Software for the sole and 
+exclusive purpose of developing versions of such 
+Licensed Software only for use within the Product.
+
+(ii) make copies, prepare derivative works of the object
+code versions of the Licensed Software for the sole  
+purpose of designing, developing and manufacturing the 
+Products.
+
+(iii) make copies, prepare derivative works of the 
+documentation part of the Licensed Software (including 
+non confidential comments from source code files if 
+applicable), for the sole purpose of providing 
+documentation for the Product and its usage.
+
+(iv) make, have made, use, sell, offer to sell, import 
+and export or otherwise distribute Products also through
+multiple tiers.
+
+OWNERSHIP AND COPYRIGHT
+=======================
+
+Title to the Licensed Software, related documentation 
+and all copies thereof remain with ST and/or its 
+licensors. You may not remove the copyrights notices 
+from the Licensed Software and to any copies of the 
+Licensed Software. You agree to prevent any unauthorized
+copying of the Licensed Software and related 
+documentation.
+
+RESTRICTIONS
+============
+
+Unless otherwise explicitly stated in this Agreement, 
+You may not sell, assign, sublicense, lease, rent or 
+otherwise distribute the Licensed Software for 
+commercial purposes, in whole or in part. You 
+acknowledge and agree that any use, adaptation, 
+translation or transcription of the Licensed Software or
+any portion or derivative thereof, for use with 
+processors manufactured by or for an entity other than 
+ST is a material breach of this Agreement and requires a
+separate license from ST. No source code relating to 
+and/or based upon Licensed Software is to be made 
+available or sublicensed by You unless expressly 
+permitted under the Section “License”. You acknowledge 
+and agree that the protection of the source code of the 
+Licensed Software warrants the imposition of reasonable 
+security precautions. In the event ST demonstrates to 
+You a reasonable belief that the source code of the 
+Licensed Software has been used or distributed in 
+violation of this Agreement, ST may, by written 
+notification, request certification as to whether such 
+unauthorized use or distribution has occurred. You shall
+cooperate and assist ST in its determination of whether
+there has been unauthorized use or distribution of the 
+source code of the Licensed Software and will take 
+appropriate steps to remedy any unauthorized use or 
+distribution.

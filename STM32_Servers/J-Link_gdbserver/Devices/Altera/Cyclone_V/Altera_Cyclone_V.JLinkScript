@@ -1,0 +1,30 @@
+/*********************************************************************
+*               (c) SEGGER Microcontroller GmbH & Co. KG             *
+*                        The Embedded Experts                        *
+*                           www.segger.com                           *
+**********************************************************************
+
+-------------------------- END-OF-HEADER -----------------------------
+
+File    : Altera_Cyclone_V.JLinkScript
+Purpose : Script file for Cyclone V series devices
+Literature:
+  [1]  J-Link User Guide
+
+Additional information:
+  For more information about public functions that can be implemented in order to customize J-Link actions, please refer to [1]
+*/
+
+/*********************************************************************
+*
+*       ConfigTargetSettings
+*/
+int ConfigTargetSettings(void) {
+  //
+  // For the Cyclone V device to work with J-Link the Core type needs to be set manually.
+  //
+  CPU = CORTEX_A9;
+  return 0;
+}
+
+/*************************** end of file ****************************/

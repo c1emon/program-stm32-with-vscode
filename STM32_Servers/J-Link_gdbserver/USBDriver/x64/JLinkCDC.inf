@@ -1,0 +1,349 @@
+;
+; JLink with integrated CDC driver setup information file
+; Copyright (c) 2011-2014 by SEGGER Microcontroller GmbH & Co. KG
+;
+; This file supports:
+;     x86: Windows XP, Windows Vista, Windows 7,
+;          Windows 8,  Windows 8.1
+;     x64: Windows XP, Windows Vista, Windows 7,
+;          Windows 8,  Windows 8.1
+;
+[Version]
+Signature="$Windows NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%MFGNAME%
+DriverVer=08/02/2018,6.0.2601.5
+CatalogFile=JLinkCDC.cat
+
+[Manufacturer]
+%MFGNAME%=CDCDevice, NT, NTamd64
+;
+; [old format]
+; 0x0101 - J-Link (default)                 | Flasher STM8 | Flasher ARM | Flasher 5 PRO
+; 0x0102 - J-Link USBAddr = 1 (obsolete)
+; 0x0103 - J-Link USBAddr = 2 (obsolete)
+; 0x0104 - J-Link USBAddr = 3 (obsolete)
+; 0x0105 - CDC + J-Link
+; 0x0106 - CDC
+; 0x0107 - RNDIS  + J-Link
+; 0x0108 - J-Link + MSD
+;
+; J-Link Product-Id assignment:
+; 0x1000 +
+; Bit 0:    MSD
+; Bit 1:    RNDIS
+; Bit 2:    CDC_0 (Num VCOM, LSB)
+; Bit 3:    HID
+; Bit 4:    J-Link (BULK via SEGGER host driver)
+; Bit 5:    J-Link (BULK via WinUSB driver. Needs to be enabled in J-Link config area)
+; Bit 6:    CDC_1 (Num VCOM, MSB)
+;
+; [new format]
+; 0x1001: MSD
+; 0x1002: RNDIS
+; 0x1003: RNDIS  + MSD
+; 0x1004: 1x CDC
+; 0x1005: 1x CDC    + MSD
+; 0x1006: RNDIS  + 1x CDC
+; 0x1007: RNDIS  + 1x CDC    + MSD
+; 0x1008: HID
+; 0x1009: MSD    + HID
+; 0x100a: RNDIS  + HID
+; 0x100b: RNDIS  + MSD    + HID
+; 0x100c:          1x CDC    + HID
+; 0x100d:          1x CDC    + MSD    + HID
+; 0x100e: RNDIS  + 1x CDC    + HID
+; 0x100f: RNDIS  + 1x CDC    + MSD + HID
+; 0x1010: J_LINK_SEGGER_DRV
+; 0x1011: J_LINK_SEGGER_DRV                                + MSD
+; 0x1012: J_LINK_SEGGER_DRV                     + RNDIS
+; 0x1013: J_LINK_SEGGER_DRV                     + RNDIS    + MSD
+; 0x1014: J_LINK_SEGGER_DRV          + 1x CDC
+; 0x1015: J_LINK_SEGGER_DRV          + 1x CDC              + MSD
+; 0x1016: J_LINK_SEGGER_DRV          + 1x CDC   + RNDIS
+; 0x1017: J_LINK_SEGGER_DRV          + 1x CDC   + RNDIS    + MSD
+; 0x1018: J_LINK_SEGGER_DRV + HID
+; 0x1019: J_LINK_SEGGER_DRV + HID                          + MSD
+; 0x101a: J_LINK_SEGGER_DRV + HID               + RNDIS
+; 0x101b: J_LINK_SEGGER_DRV + HID               + RNDIS    + MSD
+; 0x101c: J_LINK_SEGGER_DRV + HID    + 1x CDC
+; 0x101d: J_LINK_SEGGER_DRV + HID    + 1x CDC              + MSD
+; 0x101e: J_LINK_SEGGER_DRV + HID    + 1x CDC   + RNDIS
+; 0x101f: J_LINK_SEGGER_DRV + HID    + 1x CDC   + RNDIS    + MSD
+; 0x1020: J_LINK_WINUSB_DRV
+; 0x1021: J_LINK_WINUSB_DRV                                + MSD
+; 0x1022: J_LINK_WINUSB_DRV                     + RNDIS
+; 0x1023: J_LINK_WINUSB_DRV                     + RNDIS    + MSD
+; 0x1024: J_LINK_WINUSB_DRV          + 1x CDC
+; 0x1025: J_LINK_WINUSB_DRV          + 1x CDC              + MSD
+; 0x1026: J_LINK_WINUSB_DRV          + 1x CDC   + RNDIS
+; 0x1027: J_LINK_WINUSB_DRV          + 1x CDC   + RNDIS    + MSD
+; 0x1028: J_LINK_WINUSB_DRV + HID
+; 0x1029: J_LINK_WINUSB_DRV + HID                          + MSD
+; 0x102a: J_LINK_WINUSB_DRV + HID               + RNDIS
+; 0x102b: J_LINK_WINUSB_DRV + HID               + RNDIS    + MSD
+; 0x102c: J_LINK_WINUSB_DRV + HID    + 1x CDC
+; 0x102d: J_LINK_WINUSB_DRV + HID    + 1x CDC              + MSD
+; 0x102e: J_LINK_WINUSB_DRV + HID    + 1x CDC   + RNDIS
+; 0x102f: J_LINK_WINUSB_DRV + HID    + 1x CDC   + RNDIS    + MSD
+; 0x103x: J_LINK_SEGGER_DRV + J_LINK_WINUSB_DRV does not make any sense, therefore skipped
+; 0x1050: J_LINK_SEGGER_DRV          + 2x CDC
+; 0x1051: J_LINK_SEGGER_DRV          + 2x CDC              + MSD
+; 0x1052: J_LINK_SEGGER_DRV          + 2x CDC   + RNDIS
+; 0x1053: J_LINK_SEGGER_DRV          + 2x CDC   + RNDIS    + MSD
+; 0x1054: J_LINK_SEGGER_DRV          + 3x CDC
+; 0x1055: J_LINK_SEGGER_DRV          + 3x CDC              + MSD
+; 0x1056: J_LINK_SEGGER_DRV          + 3x CDC   + RNDIS
+; 0x1057: J_LINK_SEGGER_DRV          + 3x CDC   + RNDIS    + MSD
+; 0x1058: J_LINK_SEGGER_DRV + HID    + 2x CDC
+; 0x1059: J_LINK_SEGGER_DRV + HID    + 2x CDC              + MSD
+; 0x105a: J_LINK_SEGGER_DRV + HID    + 2x CDC   + RNDIS
+; 0x105b: J_LINK_SEGGER_DRV + HID    + 2x CDC   + RNDIS    + MSD
+; 0x105c: J_LINK_SEGGER_DRV + HID    + 3x CDC
+; 0x105d: J_LINK_SEGGER_DRV + HID    + 3x CDC              + MSD
+; 0x105e: J_LINK_SEGGER_DRV + HID    + 3x CDC   + RNDIS
+; 0x105f: J_LINK_SEGGER_DRV + HID    + 3x CDC   + RNDIS    + MSD
+; 0x1060: J_LINK_WINUSB_DRV          + 2x CDC
+; 0x1061: J_LINK_WINUSB_DRV          + 2x CDC              + MSD
+; 0x1062: J_LINK_WINUSB_DRV          + 2x CDC   + RNDIS
+; 0x1063: J_LINK_WINUSB_DRV          + 2x CDC   + RNDIS    + MSD
+; 0x1064: J_LINK_WINUSB_DRV          + 3x CDC
+; 0x1065: J_LINK_WINUSB_DRV          + 3x CDC              + MSD
+; 0x1066: J_LINK_WINUSB_DRV          + 3x CDC   + RNDIS
+; 0x1067: J_LINK_WINUSB_DRV          + 3x CDC   + RNDIS    + MSD
+; 0x1068: J_LINK_WINUSB_DRV + HID    + 2x CDC
+; 0x1069: J_LINK_WINUSB_DRV + HID    + 2x CDC              + MSD
+; 0x106a: J_LINK_WINUSB_DRV + HID    + 2x CDC   + RNDIS
+; 0x106b: J_LINK_WINUSB_DRV + HID    + 2x CDC   + RNDIS    + MSD
+; 0x106c: J_LINK_WINUSB_DRV + HID    + 3x CDC
+; 0x106d: J_LINK_WINUSB_DRV + HID    + 3x CDC              + MSD
+; 0x106e: J_LINK_WINUSB_DRV + HID    + 3x CDC   + RNDIS
+; 0x106f: J_LINK_WINUSB_DRV + HID    + 3x CDC   + RNDIS    + MSD
+;
+[CDCDevice.NT]
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_0105&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_0106
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1004
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1005&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1006&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1007&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100C&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100D&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100E&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100F&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1014&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1015&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1016&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1017&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101C&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101D&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101E&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101F&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1050&MI_00 ; CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1050&MI_02 ; CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1051&MI_00 ; CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1051&MI_02 ; CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1052&MI_02 ; RNDIS  + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1052&MI_04 ; RNDIS  + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1053&MI_02 ; RNDIS  + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1053&MI_04 ; RNDIS  + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1054&MI_00 ; CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1054&MI_02 ; CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1054&MI_04 ; CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1055&MI_00 ; CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1055&MI_02 ; CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1055&MI_04 ; CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1056&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1056&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1056&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1057&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1057&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1057&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1058&MI_00 ; CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1058&MI_02 ; CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1059&MI_00 ; CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1059&MI_02 ; CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105a&MI_02 ; RNDIS  + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105a&MI_04 ; RNDIS  + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105b&MI_02 ; RNDIS  + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105b&MI_04 ; RNDIS  + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105c&MI_00 ; CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105c&MI_02 ; CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105c&MI_04 ; CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105d&MI_00 ; CDC    + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105d&MI_02 ; CDC    + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105d&MI_04 ; CDC    + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105e&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105e&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105e&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105f&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105f&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105f&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD + HID
+
+
+[CDCDevice.NTamd64]
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_0105&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_0106
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1004
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1005&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1006&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1007&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100C&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100D&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100E&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_100F&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1014&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1015&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1016&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1017&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101C&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101D&MI_00
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101E&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_101F&MI_02
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1050&MI_00 ; CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1050&MI_02 ; CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1051&MI_00 ; CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1051&MI_02 ; CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1052&MI_02 ; RNDIS  + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1052&MI_04 ; RNDIS  + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1053&MI_02 ; RNDIS  + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1053&MI_04 ; RNDIS  + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1054&MI_00 ; CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1054&MI_02 ; CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1054&MI_04 ; CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1055&MI_00 ; CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1055&MI_02 ; CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1055&MI_04 ; CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1056&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1056&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1056&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1057&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1057&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1057&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1058&MI_00 ; CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1058&MI_02 ; CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1059&MI_00 ; CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_1059&MI_02 ; CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105a&MI_02 ; RNDIS  + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105a&MI_04 ; RNDIS  + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105b&MI_02 ; RNDIS  + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105b&MI_04 ; RNDIS  + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105c&MI_00 ; CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105c&MI_02 ; CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105c&MI_04 ; CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105d&MI_00 ; CDC    + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105d&MI_02 ; CDC    + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105d&MI_04 ; CDC    + CDC    + CDC    + J-Link + MSD    + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105e&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105e&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105e&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105f&MI_02 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105f&MI_04 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD + HID
+%CDC.DESCRIPTION%=CDC_DriverInstall,USB\VID_1366&PID_105f&MI_06 ; RNDIS  + CDC    + CDC    + CDC    + J-Link + MSD + HID
+
+[CDC_DriverInstall.nt]
+CopyFiles=_CopyFiles_sys_x86
+AddReg=_Common_AddReg
+
+[CDC_DriverInstall.nt.HW]
+AddReg=_AddReg_Param
+
+[CDC_DriverInstall.nt.Services]
+AddService = JLinkCDC, 0x00000002, _AddService_x86, _EventLog_x86
+
+[_AddService_x86]
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\JLinkCDC.sys
+
+[_EventLog_x86]
+AddReg=_EventLogAddReg_x86
+
+[_EventLogAddReg_x86]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\JLinkCDC.sys"
+HKR,,TypesSupported,  %REG_DWORD%, 7
+
+[CDC_DriverInstall.NTamd64]
+CopyFiles=_CopyFiles_sys_x64
+AddReg=_Common_AddReg
+
+[CDC_DriverInstall.NTamd64.HW]
+AddReg=_AddReg_Param
+
+[CDC_DriverInstall.NTamd64.Services]
+AddService = JLinkCDC_x64, 0x00000002, _AddService_x64, _EventLog_x64
+
+[_AddService_x64]
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\JLinkCDC_x64.sys
+
+[_EventLog_x64]
+AddReg=_EventLogAddReg_x64
+
+[_EventLogAddReg_x64]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\JLinkCDC_x64.sys"
+HKR,,TypesSupported,  %REG_DWORD%, 7
+
+[_AddReg_Param]
+HKR,,DriverUserInterfaceGuid, %REG_SZ%,    ""
+HKR,,ReadBufferSize,          %REG_DWORD%, 4096
+HKR,,WriteBufferSize,         %REG_DWORD%, 4096
+HKR,,UseLogicBuffer,          %REG_DWORD%, 0
+HKR,,ReadBufferCount,         %REG_DWORD%, 3
+HKR,,WriteBufferCount,        %REG_DWORD%, 3
+HKR,,SendLineCoding,          %REG_DWORD%, 1
+HKR,,SendLineState,           %REG_DWORD%, 1
+HKR,,SendBreak,               %REG_DWORD%, 1
+HKR,,OperationMode,           %REG_DWORD%, 1
+HKR,,DefaultLineState,        %REG_DWORD%, 0x30
+HKR,,ClearFeatureOnStart,     %REG_DWORD%, 0
+HKR,,VendorPipeReset,         %REG_DWORD%, 0
+HKR,,StaticDeviceObject,      %REG_DWORD%, 0
+HKR,,ClearRtsDtrOnClose,      %REG_DWORD%, 0
+HKR,,DisConWriteMode,         %REG_DWORD%, 0
+HKR,,IgnorePurgeTxClear,      %REG_DWORD%, 0
+HKR,,DeviceObjectName,        %REG_SZ%,    "thcdcacm"
+HKR,,DoNotSendShortPackets,   %REG_DWORD%, 0
+HKR,,DisableComLink,          %REG_DWORD%, 0
+
+[_Common_AddReg]
+HKR,,PortSubClass,1,01
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[_CopyFiles_sys_x86]
+JLinkCDC.sys,,,0x00000004
+
+[_CopyFiles_sys_x64]
+JLinkCDC_x64.sys,,,0x00000004
+
+[DestinationDirs]
+DefaultDestDir  = 12  ; %windir%\system32\drivers
+_CopyFiles_sys_x86 = 12
+_CopyFiles_sys_x64 = 12
+
+[SourceDisksNames]
+1=%DiskName%,,0
+[SourceDisksNames.amd64]
+1=%DiskName%,,0
+
+[SourceDisksFiles]
+JLinkCDC.sys=1
+[SourceDisksFiles.amd64]
+JLinkCDC_x64.sys=1
+
+[Strings]
+MFGNAME         = "SEGGER"
+CDC.DESCRIPTION = "JLink CDC UART Port"
+SERVICE         = "USB CDC serial port emulation"
+DiskName        ="J-Link Installation Disk"
+REG_SZ          = 0x00000000
+REG_MULTI_SZ    = 0x00010000
+REG_EXPAND_SZ   = 0x00020000
+REG_BINARY      = 0x00000001
+REG_DWORD       = 0x00010001
+
+; *** EOF ***

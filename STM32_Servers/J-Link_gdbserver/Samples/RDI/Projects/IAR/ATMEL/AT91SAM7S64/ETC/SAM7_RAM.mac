@@ -1,0 +1,118 @@
+/*********************************************************************
+*               SEGGER MICROCONTROLLER SYSTEME GmbH                  *
+*       Solutions for real time microcontroller applications         *
+**********************************************************************
+*                                                                    *
+*       (C) 2004 - 2005   SEGGER Microcontroller Systeme GmbH        *
+*                                                                    *
+*        www.segger.com   Support: support@segger.com                *
+*                                                                    *
+**********************************************************************
+
+----------------------------------------------------------------------
+File    : SAM7_RAM.mac
+Purpose : Setup file for IAR
+          Feel free to modify this file acc. to your target system.
+--------  END-OF-HEADER  ---------------------------------------------
+*/
+
+__var i;
+__var k;
+
+
+/*********************************************************************
+*
+*       _DisableWatchdog()
+*/
+_DisableWatchdog() {
+  __writeMemory32(0x00008000,0xFFFFFD44,"Memory");  //      AT91C_BASE_WDTC->WDTC_WDMR= AT91C_SYSC_WDDIS;
+}
+
+
+/*********************************************************************
+*
+*       _MapRAMAt0()
+*
+* Function description
+*   Maps RAM at 0.
+*
+* Notes
+*   (1) Unfortunately, the mapping can not be assigned, but only toggled.
+*       Therefor we need to check if RAM is at 0 by trying to modify the
+*       data at addr. 0.
+*/
+_MapRAMAt0(){
+  i = __readMemory32(0x00000000,"Memory");
+  __writeMemory32(i + 1, 0x00,"Memory");
+  k =__readMemory32(0x00000000,"Memory");
+  __writeMemory32(i, 0x00,"Memory");             // Restore
+  if (i == k) {
+    __message "Changing mapping: RAM mapped to 0";  
+    __writeMemory32(0x00000001,0xFFFFFF00,"Memory");
+  }
+}
+
+/*********************************************************************
+*
+*       _InitAIC()
+*/
+_InitAIC() {
+  __writeMemory32(0xFFFFFFFF,0xFFFFF124,"Memory");    // Mask All interrupt pAic->AIC_IDCR = 0xFFFFFFFF;
+  for (i = 0; i < 8; i++) {
+    k =  __readMemory32(0xFFFFF130,"Memory");        // AT91C_BASE_AIC->AIC_EOICR
+  }
+}
+
+/*********************************************************************
+*
+*       _InitRSTC()
+*
+* Function description
+*   Initializes the RSTC (Reset controller).
+*   This makes sense since the default is to not allow user resets, which makes it impossible to
+*   apply a second RESET via J-Link
+*/
+_InitRSTC() {
+  __writeMemory32(0xA5000001, 0xFFFFFD08,"Memory");    // Allow user reset
+}
+
+/*********************************************************************
+*
+*       _InitPLL()
+*/
+_InitPLL() {
+  __writeMemory32(0x002f0100,0xFFFFFF60,"Memory");    // Set 1 wait state for flash (2 cycles)
+  __writeMemory32(0x00000601,0xFFFFFc20,"Memory");    // PLL              
+  __writeMemory32(0x10191c05,0xFFFFFc2c,"Memory");    // PLL
+  __writeMemory32(0x00000007,0xFFFFFc30,"Memory");    // PLL
+}
+
+/*********************************************************************
+*
+*       execUserReset()
+*/
+execUserReset() {
+  __emulatorSpeed(30000);   // Slow JTAG speed to be on the safe side
+  __hwReset(0);
+  _InitPLL();
+  __emulatorSpeed(4000000);  // Use full JTAG speed
+  _MapRAMAt0();
+  _InitAIC();
+  _DisableWatchdog();
+  _InitRSTC();
+}
+
+/*********************************************************************
+*
+*       execUserPreload()
+*/
+execUserPreload() {
+  _InitPLL();
+  __emulatorSpeed(4000000);  // Use full JTAG speed
+  _MapRAMAt0();
+  _InitAIC();
+  _DisableWatchdog();
+  _InitRSTC();
+}
+
+/**************** End of file ***************************************/

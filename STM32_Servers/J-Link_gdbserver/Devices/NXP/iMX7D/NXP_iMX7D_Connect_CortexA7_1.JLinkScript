@@ -1,0 +1,38 @@
+/*********************************************************************
+*            (c) 1995 - 2018 SEGGER Microcontroller GmbH             *
+*                        The Embedded Experts                        *
+*                           www.segger.com                           *
+**********************************************************************
+
+-------------------------- END-OF-HEADER -----------------------------
+*/
+
+/*********************************************************************
+*
+*       ResetTarget
+*/
+void ResetTarget(void) {
+  // In case cores 1-3 are reset, we do nothing, 
+  //  as we would lose connection to these cores, when resetting the device
+  //  as a reset disables the clock to them.
+}
+
+/*********************************************************************
+*
+*       InitTarget
+*/
+void InitTarget(void) {
+  Report("****************************************************");
+  Report("J-Link script: iMX7D Cortex-A7_1 core J-Link script");
+  Report("****************************************************");
+  JLINK_CORESIGHT_Configure("IRPre=0;DRPre=0;IRPost=0;DRPost=0;IRLenDevice=4");
+  CPU = CORTEX_A7;                                                              // Pre-select that we have a Cortex-A7 connected
+  JTAG_AllowTAPReset = 1;                                                       // J-Link is allowed to use a TAP reset for JTAG-chain auto-detection
+  CORESIGHT_CoreBaseAddr = 0x30072000;
+  CORESIGHT_AddAP(0, CORESIGHT_AHB_AP);
+  CORESIGHT_AddAP(1, CORESIGHT_APB_AP);
+  CORESIGHT_AddAP(2, CORESIGHT_CUSTOM_AP);
+  CORESIGHT_AddAP(3, CORESIGHT_CUSTOM_AP);
+  CORESIGHT_AddAP(4, CORESIGHT_AHB_AP);
+  CORESIGHT_IndexAPBAPToUse = 1;
+}

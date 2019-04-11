@@ -1,0 +1,198 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+Target (AT91SAM7S Flash), 0x0005 // Tools: ''
+Target (AT91SAM7S RAM), 0x0005 // Tools: ''
+
+Group (Startup Code)
+Group (Source Code)
+
+File 1,2,<.\SAM7S.s><SAM7S.s> 0x4199C2C0 
+File 2,1,<.\Blinky.c><Blinky.c> 0x418AA5CE 
+
+
+Options 1,0,0  // Target 'AT91SAM7S Flash'
+ Device (AT91SAM7S64)
+ Vendor (Atmel)
+ Cpu (IRAM(0x200000-0x203FFF) IROM(0x100000-0x10FFFF) CLOCK(40000000) CPUTYPE(ARM7TDMI))
+ FlashUt ()
+ StupF ("STARTUP\Atmel\SAM7S.s" ("Atmel AT91SAM7S Startup Code"))
+ FlashDR ()
+ DevID (3815)
+ Rgf (AT91SAM.H)
+ Mem ()
+ C ()
+ A ()
+ RL ()
+ OH ()
+ DBC_IFX ()
+ DBC_CMS ()
+ DBC_AMS ()
+ DBC_LMS ()
+ UseEnv=0
+ EnvBin (C:\Keil\ARM\BIN\)
+ EnvInc ()
+ EnvLib ()
+ EnvReg ()
+ OrgReg (ÿAtmel\SAM7S\)
+ TgStat=0
+ OutDir (.\Flash\)
+ OutName (Blinky)
+ GenApp=1
+ GenLib=0
+ GenHex=0
+ Debug=1
+ Browse=0
+ LstDir (.\Flash\)
+ HexSel=0
+ MG32K=0
+ TGMORE=0
+ RunUsr 0 0 <>
+ RunUsr 1 0 <>
+ BrunUsr 0 0 <>
+ BrunUsr 1 0 <>
+ SVCSID <>
+ KACPU (ARM7TDMI)
+ TKAFL { 0,64,25,1,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KIROM { 1,0,0,16,0,0,0,1,0 }
+ KIRAM { 0,0,0,32,0,0,64,0,0 }
+ KXRAM { 0,0,0,0,0,0,0,0,0 }
+ KAOCM { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KCAFLG { 197,152,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KCAMSC ()
+ KCADEF ()
+ KCAUDF ()
+ KCAINC ()
+ KAAFLG { 20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KAAMSC ()
+ KAASET ()
+ KAARST ()
+ KAAINC ()
+ PropFld { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=1
+ AlwaysBuild=0
+ GenAsm=0
+ AsmAsm=0
+ PublicsOnly=0
+ StopCode=3
+ CustArgs ()
+ LibMods ()
+ KLAFLG { 44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KLAMSC ()
+ KLADWN ()
+ KLACFI ()
+ KLAASN ()
+ KLARES ()
+ KLACCL ()
+ KLAUCL ()
+ KLACSC ()
+ KLAUCS ()
+  OPTDL (SARM.DLL)(-cAT91SAM7S)(DARMATS.DLL)(-p91SAM7S64)(SARM.DLL)()(TARMATS.DLL)(-p91SAM7S64)
+  OPTDBG 49150,1,()()()()()()()()()(.\Flash.ini) (BIN\AGDIRDI.DLL)()()()
+ FLASH1 { 9,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 }
+ FLASH2 (BIN\AGDIRDI.DLL)
+ FLASH3 ("" ())
+ FLASH4 (.\Flash.ini)
+EndOpt
+
+Options 2,0,0  // Target 'AT91SAM7S RAM'
+ Device (AT91SAM7S64)
+ Vendor (Atmel)
+ Cpu (IRAM(0x200000-0x203FFF) IROM(0x100000-0x10FFFF) CLOCK(20000000) CPUTYPE(ARM7TDMI))
+ FlashUt ()
+ StupF ("STARTUP\Atmel\SAM7S.s" ("Atmel AT91SAM7S Startup Code"))
+ FlashDR ()
+ DevID ()
+ Rgf (AT91SAM.H)
+ Mem ()
+ C ()
+ A ()
+ RL ()
+ OH ()
+ DBC_IFX ()
+ DBC_CMS ()
+ DBC_AMS ()
+ DBC_LMS ()
+ UseEnv=0
+ EnvBin ()
+ EnvInc ()
+ EnvLib ()
+ EnvReg (ÿAtmel\SAM7S\)
+ OrgReg (ÿAtmel\SAM7S\)
+ TgStat=16
+ OutDir (.\RAM\)
+ OutName (Blinky)
+ GenApp=1
+ GenLib=0
+ GenHex=0
+ Debug=1
+ Browse=1
+ LstDir (.\RAM\)
+ HexSel=0
+ MG32K=0
+ TGMORE=0
+ RunUsr 0 0 <>
+ RunUsr 1 0 <>
+ BrunUsr 0 0 <>
+ BrunUsr 1 0 <>
+ SVCSID <>
+ KACPU (ARM7TDMI)
+ TKAFL { 0,64,25,1,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KIROM { 1,0,0,16,0,0,0,1,0 }
+ KIRAM { 0,0,0,32,0,0,64,0,0 }
+ KXRAM { 0,0,0,0,0,0,0,0,0 }
+ KAOCM { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KCAFLG { 197,152,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KCAMSC ()
+ KCADEF ()
+ KCAUDF ()
+ KCAINC ()
+ KAAFLG { 20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KAAMSC ()
+ KAASET ()
+ KAARST ()
+ KAAINC ()
+ PropFld { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=1
+ AlwaysBuild=0
+ GenAsm=0
+ AsmAsm=0
+ PublicsOnly=0
+ StopCode=3
+ CustArgs ()
+ LibMods ()
+ KLAFLG { 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KLAMSC ()
+ KLADWN ()
+ KLACFI ()
+ KLAASN ()
+ KLARES ()
+ KLACCL ()
+ KLAUCL (DATA (0x202000-0x203FFF), \~CODE (0x200000-0x201FFF), CONST (0x200000-0x201FFF))
+ KLACSC ()
+ KLAUCS ()
+  OPTDL (SARM.DLL)(-cAT91SAM7S)(DARMATS.DLL)(-p91SAM7S64)(SARM.DLL)()(TARMATS.DLL)(-p91SAM7S64)
+  OPTDBG 49150,1,()()()()()()()()()(.\RAM.ini) (BIN\AGDIRDI.DLL)()()()
+ FLASH1 { 1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 }
+ FLASH2 (BIN\AGDIRDI.DLL)
+ FLASH3 ("" ())
+ FLASH4 (.\RAM.ini)
+EndOpt
+
+Options 2,1,1  // File 'SAM7S.s'
+ PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=2
+ AlwaysBuild=2
+ GenAsm=2
+ AsmAsm=2
+ PublicsOnly=2
+ StopCode=11
+ CustArgs ()
+ LibMods ()
+ KAAFLG { 170,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ KAAMSC ()
+ KAASET (RAM_MODE,REMAP)
+ KAARST ()
+ KAAINC ()
+EndOpt
+

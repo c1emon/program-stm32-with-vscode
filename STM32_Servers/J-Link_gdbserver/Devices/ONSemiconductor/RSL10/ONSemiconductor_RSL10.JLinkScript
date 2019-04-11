@@ -1,0 +1,149 @@
+/* ----------------------------------------------------------------------------
+ * Copyright (c) 2017 Semiconductor Components Industries, LLC (d/b/a
+ * ON Semiconductor), All Rights Reserved
+ *
+ * This code is the property of ON Semiconductor and may not be redistributed
+ * in any form without prior written permission from ON Semiconductor.
+ * The terms of use and warranty for this code are covered by contractual
+ * agreements between ON Semiconductor and the licensee.
+ *
+ * This is Reusable Code.
+ *
+ * ----------------------------------------------------------------------------
+ * ONSemiconductor_RSL10.JLinkScript
+ * - RSL10 JLink Script
+ *
+ *   Provides a custom reset function for RSL10
+ * ----------------------------------------------------------------------------
+ * $Revision: 1.7 $
+ * $Date: 2017/06/19 16:15:11 $
+ * ------------------------------------------------------------------------- */
+
+/* Registers */
+__constant U32 FP_CTRL_ADDR     = 0xE0002000;
+__constant U32 FP_COMP0_ADDR    = 0xE0002008;
+__constant U32 AIRCR_ADDR       = 0xE000ED0C;
+__constant U32 NVR1_ENTRY_ADDR  = 0x00800000;
+__constant U32 FLASH_ENTRY_ADDR = 0x00100004;
+
+/* Constants */
+__constant U32 FP_CTRL_EN        = 0x00000003;           /* Enable flash patch unit */ 
+__constant U32 FCOMP_EN_BP_LOWER = (1 << 30) | (1 << 0); /* Bitband to set BP on lower halfword of addr and enable BP */
+
+/* Global variables */
+U32 fp_ctrl_old;  /* Used to restore previous fp_ctrl value */
+U32 fp_comp0_old; /* Used to restore previous fp_comp0 value */
+U32 entry_point;  /* Stores application's entry point and is set by ResetCatchSet */
+
+
+/*******************************************************************
+ * Set a breakpoint when a valid application's entry point is found.
+ * If NVR1 has no valid entry point, read it from Flash.
+ *******************************************************************/
+void ResetCatchSet()
+{  
+    /* Get user's application entry point from NVR1 */
+    entry_point = JLINK_MEM_ReadU32(NVR1_ENTRY_ADDR);
+    if (entry_point == 0xFFFFFFFF) /* If entry point is not set in NVR1 */
+    {
+        entry_point = JLINK_MEM_ReadU32(FLASH_ENTRY_ADDR); /* Get entry point from FLASH */
+    }
+
+    /* Set a hardware breakpoint on application's entry point (set flash patch unit manually)
+     * If reset address points to 0xFFFFFFFF, the device is empty and CPU will be halted after 100ms. */
+    fp_ctrl_old  = JLINK_MEM_ReadU32(FP_CTRL_ADDR);   /* Remember flash patch unit settings */
+    fp_comp0_old = JLINK_MEM_ReadU32(FP_COMP0_ADDR);  /* Remember settings for comparator 0 */                             
+    if (entry_point != 0xFFFFFFFF) 
+    {
+        JLINK_MEM_WriteU32(FP_CTRL_ADDR, FP_CTRL_EN);                       /* Enable flash patch unit */                                 
+        JLINK_MEM_WriteU32(FP_COMP0_ADDR, entry_point | FCOMP_EN_BP_LOWER); /* Set BP on lower halfword of addr. Enable BP */
+    }
+}
+
+/*******************************************************************
+ * Restore previous FPB settings for the flash patch control 
+ * and comparator0 registers
+ *******************************************************************/
+void ResetCatchClear()
+{
+    JLINK_MEM_WriteU32(FP_COMP0_ADDR, fp_comp0_old);
+    JLINK_MEM_WriteU32(FP_CTRL_ADDR, fp_ctrl_old);
+}
+
+/*******************************************************************
+ * Execute a software reset via AIRCR.
+ * If aircr_value=0x05FA0001, execute core-only reset (VECTRESET)
+ * If aircr_value=0x05FA0004, execute system-wide reset (SYSRESETREQ)
+ * After reset, the CPU is expected to halt at the breakpoint set by 
+ * ResetCatchSet. If no program is loaded or a timeout occurs, 
+ * CPU is manually halted.
+ *******************************************************************/
+int SoftwareReset(U32 aircr_value) 
+{
+    int end_time, is_halted, timeout;
+
+    /* Request reset via AIRCR */
+    JLINK_MEM_WriteU32(AIRCR_ADDR, aircr_value);
+    SYS_Sleep(100);  /* Boot loader runs after reset */
+    
+    if (entry_point == 0xFFFFFFFF) 
+    {
+        Report("No application found. Manually halting CPU.");
+        JLINK_TARGET_Halt();
+    }
+    else
+    {
+        /* Wait until CPU is halted or timeout occurs */
+        end_time = JLINK_GetTime() + 1000;
+        do {
+            is_halted = JLINK_TARGET_IsHalted();
+            timeout   = end_time < JLINK_GetTime()
+        } while ( is_halted==0 && timeout==0 );
+
+        if(is_halted == -1)
+        {
+            Report("Error while checking CPU state after reset.");
+            return -1;
+        }
+
+        if (timeout)
+        {
+            Report("Timeout while waiting for CPU to halt after reset. Manually halting CPU.");
+            JLINK_TARGET_Halt();
+        }
+    }
+    return 0;
+}
+
+/*******************************************************************
+ * Override default J-Link reset strategy.  
+ * CPU is halted by a breakpoint at application's entry point.
+ * When no valid entry point is found, CPU is manually halted after reset.
+ * Support reset types 0 and 1.
+ *******************************************************************/
+int ResetTarget(void) 
+{
+    int r,reset_type;
+
+    ResetCatchSet(); /* Set a breakpoint at application's entry point */
+
+    reset_type = MAIN_ResetType;
+    Report1("Executing RSL10 reset type: ",reset_type);
+    if(MAIN_ResetType == 0)
+    {
+        r = SoftwareReset(0x05FA0004); /* Software System-wide reset (SYSRESETREQ via AIRCR) */
+    }
+    else if(MAIN_ResetType == 1)
+    {
+        r = SoftwareReset(0x05FA0001); /* Processor reset (VECTRESET via AIRCR) */
+    }
+    else 
+    {
+        Report1("Unsupported RSL10 Reset Type: ",reset_type);
+        r = -1;
+    }
+
+    ResetCatchClear(); /* Restore previous settings of FPB unit */
+
+    return r;
+}
